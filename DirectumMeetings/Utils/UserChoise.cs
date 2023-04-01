@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DirectumMeetings.Utils
+﻿namespace DirectumMeetings.Utils
 {
     internal enum UserChoise
     {

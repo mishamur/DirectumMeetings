@@ -1,7 +1,6 @@
 ﻿using DirectumMeetings.Controllers;
 using DirectumMeetings.Models;
 using DirectumMeetings.Utils;
-using System.Security.Cryptography.X509Certificates;
 
 namespace DirectumMeetings
 {
@@ -12,13 +11,17 @@ namespace DirectumMeetings
             bool cancellationToken = true;
             Action<string> consoleLogger = Console.WriteLine;
 
-            MeetingsController controller = new MeetingsController(consoleLogger);
-            controller.AddMeeting(new Meeting(DateTime.Now, "jaba1", "Udgu", TimeSpan.FromMinutes(60)));
-            controller.AddMeeting(new Meeting(DateTime.Now.AddMinutes(120), "jaba2", "Udgu", TimeSpan.FromMinutes(60)));
-            
+            MeetingsController meetingController = new MeetingsController(consoleLogger);
+            //meetingController.AddMeeting(new Meeting(DateTime.Now, "jaba1", "Udgu", TimeSpan.FromMinutes(60)));
+            meetingController.AddMeeting(new Meeting(DateTime.Now.AddMinutes(10), "jaba2", "Udgu", TimeSpan.FromMinutes(60), 5));
+
+            NotificationManager notificationManager = new NotificationManager(meetingController, Console.WriteLine);
+
+            new TaskFactory().StartNew(() => { notificationManager.RunCheckNotification(1000); });
+
+            Console.WriteLine("\nДобро пожаловать в приложение для управления личными встречами");
             while (cancellationToken)
             {
-                Console.WriteLine("\nДобро пожаловать в приложение для управление личными встречами");
                 Console.WriteLine("Выберете следующее: ");
                 Console.WriteLine("1. Добавить встречу");
                 Console.WriteLine("2. Изменить встречу");
@@ -37,7 +40,7 @@ namespace DirectumMeetings
                             Meeting meeting = Meeting.CreateWithConsole();
                             if(meeting != null)
                             {
-                                controller.AddMeeting(meeting);
+                                meetingController.AddMeeting(meeting);
                             }
                             else
                             {
@@ -49,16 +52,29 @@ namespace DirectumMeetings
                         {
                             Console.WriteLine("Введите название встречи которую хотите поменять: ");
                             string title = Console.ReadLine();
-                            Meeting meeting = Meeting.CreateWithConsole();
-                            if(title != null && meeting != null)
+                            if (title != null)
                             {
-                                controller.UpdateMeeting(title, meeting);
+                                if (meetingController.IsContainsWithTitle(title))
+                                {
+                                    Meeting meeting = Meeting.CreateWithConsole();
+                                    if (meeting != null)
+                                    {
+                                        meetingController.UpdateMeeting(title, meeting);
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Некорректный ввод");
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Записи с такими названием не существует");
+                                }
                             }
                             else
                             {
                                 Console.WriteLine("Некорректный ввод");
-                            }
-                            
+                            }                          
                         }
                         break;
                     case UserChoise.RemoveMeeting:
@@ -67,7 +83,7 @@ namespace DirectumMeetings
                             string title = Console.ReadLine();
                             if(title != null)
                             {
-                                controller.RemoveMeeting(title);
+                                meetingController.RemoveMeeting(title);
                             }
                             else
                             {
@@ -80,7 +96,7 @@ namespace DirectumMeetings
                         {
                             Console.WriteLine("Получить все свои встречи");
                             
-                            foreach(var value in controller.GetAllMeetings())
+                            foreach(var value in meetingController.GetAllMeetings())
                             {
                                 Console.WriteLine(value);
                             }
@@ -91,7 +107,7 @@ namespace DirectumMeetings
                             Console.WriteLine("Введите дату, за которую вы хотите получить встречи: (в формате ГГГГ-ММ-ДД)");
                             DateTime dateTime;
                             if(DateTime.TryParse(Console.ReadLine(), out dateTime))
-                                controller.SaveMeetingsToFile(dateTime);
+                                meetingController.SaveMeetingsToFile(dateTime);
                             else
                                 Console.WriteLine("Некорректный ввод даты");
                         }
@@ -105,7 +121,7 @@ namespace DirectumMeetings
                         Console.WriteLine("Введите число от 0 до 5");
                         break;
                 }
-
+                
             }
         }
 

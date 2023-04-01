@@ -1,9 +1,4 @@
 ﻿using DirectumMeetings.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using LoaderAssembly;
 
 namespace DirectumMeetings.Controllers
@@ -39,15 +34,15 @@ namespace DirectumMeetings.Controllers
         /// <param name="meeting"></param>
         public void AddMeeting(Meeting meeting)
         {
-            if(meeting.DateStart < DateTime.Now)
+            if (meeting.DateStart < DateTime.Now)
             {
                 logger?.Invoke("Встречи всегда планируются только на будущее время");
                 return;
             }
             //проверка на пересечение!!!
-            foreach(var value in _meetings)
+            foreach (var value in _meetings)
             {
-                if(!(value.DateStart < meeting.DateStart && value.DateEnd < meeting.DateStart ||
+                if (!(value.DateStart < meeting.DateStart && value.DateEnd < meeting.DateStart ||
                 value.DateStart > meeting.DateEnd))
                 {
                     logger?.Invoke("встреча пересекается");
@@ -64,7 +59,12 @@ namespace DirectumMeetings.Controllers
         public void UpdateMeeting(string title, Meeting newMeeting)
         {
             int updateIndex = _meetings.FindIndex(m => m.Title.Equals(title));
-            if(updateIndex != -1)
+            if (updateIndex == -1)
+            {
+                logger?.Invoke("Встреча не найдена");
+                return;
+            }
+            else
             {
                 _meetings.RemoveAt(updateIndex);
                 AddMeeting(newMeeting);
@@ -76,8 +76,8 @@ namespace DirectumMeetings.Controllers
         /// <param name="title">Название встречи</param>
         public void RemoveMeeting(string title)
         {
-            int deleteIndex =_meetings.FindIndex(m => m.Title.Equals(title));
-            if(deleteIndex != -1) 
+            int deleteIndex = _meetings.FindIndex(m => m.Title.Equals(title));
+            if (deleteIndex != -1)
                 _meetings.RemoveAt(deleteIndex);
         }
         /// <summary>
@@ -102,6 +102,13 @@ namespace DirectumMeetings.Controllers
                 .Where(x => x.DateStart.Date.Equals(dateTime))
                 .Select(x => x.ToString() + "\n")
                 .ToList()));
+
+            logger?.Invoke($"Записи успешно сохранены в файл {pathToFile}");
+        }
+
+        public bool IsContainsWithTitle(string title)
+        {
+            return _meetings.Find(x => x.Title.Equals(title)) != null;
         }
     }
 }
