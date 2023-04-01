@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33424.131
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectumMeetings", "DirectumMeetings\DirectumMeetings.csproj", "{DFB9C421-C8DC-49C6-A6D6-E7FB47B523AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DirectumMeetings", "DirectumMeetings\DirectumMeetings.csproj", "{DFB9C421-C8DC-49C6-A6D6-E7FB47B523AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoaderAssembly", "LoaderAssembly\LoaderAssembly.csproj", "{2594FB5D-264C-4DD1-B337-11894FF20030}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{DFB9C421-C8DC-49C6-A6D6-E7FB47B523AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFB9C421-C8DC-49C6-A6D6-E7FB47B523AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DFB9C421-C8DC-49C6-A6D6-E7FB47B523AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2594FB5D-264C-4DD1-B337-11894FF20030}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2594FB5D-264C-4DD1-B337-11894FF20030}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2594FB5D-264C-4DD1-B337-11894FF20030}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2594FB5D-264C-4DD1-B337-11894FF20030}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

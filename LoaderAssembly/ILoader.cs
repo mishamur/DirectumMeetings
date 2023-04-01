@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DirectumMeetings.Model
+namespace LoaderAssembly
 {
-    internal class Meeting
+    internal interface ILoader
     {
+        public void Load(string content);
     }
 }
