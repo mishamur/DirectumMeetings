@@ -29,8 +29,17 @@ namespace DirectumMeetings
                 Console.WriteLine("5. Сохранить встречи за конкретное число в файл");
                 Console.WriteLine("0. Выход ");
 
-                int choiseNum = int.Parse(Console.ReadLine());
-
+                int choiseNum;
+                try
+                {
+                    choiseNum = int.Parse(Console.ReadLine());
+                }
+                catch (FormatException ex)
+                {
+                    Console.WriteLine("Введите число от 0 до 5");
+                    continue;
+                }
+                
                 switch ((UserChoise)choiseNum)
                 {
                     case UserChoise.AddMeeting:
@@ -123,6 +132,5 @@ namespace DirectumMeetings
                 
             }
         }
-
     }
 }
