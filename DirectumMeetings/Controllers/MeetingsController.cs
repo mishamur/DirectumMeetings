@@ -18,7 +18,6 @@ namespace DirectumMeetings.Controllers
             this.logger = logger;
             this._meetings = new List<Meeting>();
         }
-
         /// <summary>
         /// Получить все встречи
         /// </summary>
@@ -27,7 +26,6 @@ namespace DirectumMeetings.Controllers
         {
             return _meetings.Select(x => x).OrderBy(m => m.DateStart).ToList();
         }
-
         /// <summary>
         /// Добавить встречу
         /// </summary>
@@ -52,7 +50,6 @@ namespace DirectumMeetings.Controllers
             //если пересечений нет, то добавляем
             _meetings.Add(meeting);
         }
-
         /// <summary>
         /// Изменить встречу
         /// </summary>
@@ -105,7 +102,6 @@ namespace DirectumMeetings.Controllers
 
             logger?.Invoke($"Записи успешно сохранены в файл {pathToFile}");
         }
-
         public bool IsContainsWithTitle(string title)
         {
             return _meetings.Find(x => x.Title.Equals(title)) != null;

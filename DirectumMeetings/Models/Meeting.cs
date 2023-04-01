@@ -37,7 +37,6 @@ namespace DirectumMeetings.Models
                 Console.WriteLine(ex.Message);
             }
             return meeting;
-            
         }
         
         private static Meeting TryToCreateWithConsole()

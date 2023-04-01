@@ -35,7 +35,6 @@ namespace DirectumMeetings.Utils
                 Thread.Sleep(millisecondsTimeout);
             }
         }
-
         /// <summary>
         /// Добавить действие к уведомлению
         /// </summary>
@@ -53,6 +52,5 @@ namespace DirectumMeetings.Utils
             if(action != null)
                 this._notificate -= action;
         }
-
     }
 }

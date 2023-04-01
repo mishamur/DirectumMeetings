@@ -12,7 +12,6 @@ namespace DirectumMeetings
             Action<string> consoleLogger = Console.WriteLine;
 
             MeetingsController meetingController = new MeetingsController(consoleLogger);
-            //meetingController.AddMeeting(new Meeting(DateTime.Now, "jaba1", "Udgu", TimeSpan.FromMinutes(60)));
             meetingController.AddMeeting(new Meeting(DateTime.Now.AddMinutes(10), "jaba2", "Udgu", TimeSpan.FromMinutes(60), 5));
 
             NotificationManager notificationManager = new NotificationManager(meetingController, Console.WriteLine);

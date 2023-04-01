@@ -11,7 +11,6 @@ namespace LoaderAssembly
             this.filePath = filePath;
            
         }
-
         public void Load(string content)
         {
             Directory.CreateDirectory(new FileInfo(filePath).DirectoryName);
