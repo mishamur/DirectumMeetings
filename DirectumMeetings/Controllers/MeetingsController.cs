@@ -1,5 +1,5 @@
 ﻿using DirectumMeetings.Models;
-using LoaderAssembly;
+using DirectumMeetings.FileLoad;
 
 namespace DirectumMeetings.Controllers
 {
@@ -93,7 +93,7 @@ namespace DirectumMeetings.Controllers
         {
             string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "meetings");
             string pathToFile = Path.Combine(folderPath, dateTime.Date.ToString("dddd-MMMM-yyyy") + ".txt");
-            FileLoader fileLoader = new FileLoader(pathToFile);
+           FileLoader fileLoader = new FileLoader(pathToFile);
 
             fileLoader.Load(string.Concat(_meetings
                 .Where(x => x.DateStart.Date.Equals(dateTime))

@@ -1,6 +1,6 @@
 ﻿using DirectumMeetings.Controllers;
 
-namespace DirectumMeetings.Utils
+namespace DirectumMeetings.Notification
 {
     public class NotificationManager
     {
@@ -20,13 +20,13 @@ namespace DirectumMeetings.Utils
         /// <param name="millisecondsTimeout">задержка в миллисекундах</param>
         /// <returns></returns>
         public Task RunCheckNotification(int millisecondsTimeout)
-        {    
+        {
             while (true)
             {
                 _meetingsController.GetAllMeetings().Where(m => m.TimeNotification != TimeSpan.Zero).ToList()
                     .ForEach(m =>
                     {
-                        if(!_titleNotificated.Contains(m.Title) && DateTime.Now > m.DateStart.Subtract(m.TimeNotification))
+                        if (!_titleNotificated.Contains(m.Title) && DateTime.Now > m.DateStart.Subtract(m.TimeNotification))
                         {
                             _notificate?.Invoke($"{m.Title} начнётся через {m.TimeNotification.Minutes} мин");
                             _titleNotificated.Add(m.Title);
@@ -41,7 +41,7 @@ namespace DirectumMeetings.Utils
         /// <param name="action"></param>
         public void SubscribeNotificAction(Action<string> action)
         {
-            this._notificate += action;
+            _notificate += action;
         }
         /// <summary>
         /// Отписать действие
@@ -49,8 +49,8 @@ namespace DirectumMeetings.Utils
         /// <param name="action"></param>
         public void UnsubscribeNotificAction(Action<string> action)
         {
-            if(action != null)
-                this._notificate -= action;
+            if (action != null && _notificate != null)
+                _notificate -= action;
         }
     }
 }
