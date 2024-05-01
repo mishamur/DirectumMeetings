@@ -30,7 +30,7 @@ namespace DirectumMeetings.Models
             Meeting meeting = null; 
             try
             {
-                meeting = TryToCreateWithConsole();
+                meeting = TryCreateWithConsole();
             }
             catch (Exception ex)
             {
@@ -39,7 +39,7 @@ namespace DirectumMeetings.Models
             return meeting;
         }
         
-        private static Meeting TryToCreateWithConsole()
+        private static Meeting TryCreateWithConsole()
         {
             Console.WriteLine("\nВведите название встречи:");
             string title = Console.ReadLine();

@@ -1,5 +1,6 @@
 ﻿using DirectumMeetings.Models;
 using DirectumMeetings.FileLoad;
+using DirectumMeetings.Settings;
 
 namespace DirectumMeetings.Controllers
 {
@@ -30,12 +31,12 @@ namespace DirectumMeetings.Controllers
         /// Добавить встречу
         /// </summary>
         /// <param name="meeting"></param>
-        public void AddMeeting(Meeting meeting)
+        public bool AddMeeting(Meeting meeting)
         {
             if (meeting.DateStart < DateTime.Now)
             {
                 logger?.Invoke("Встречи всегда планируются только на будущее время");
-                return;
+                return false;
             }
             //проверка на пересечение!!!
             foreach (var value in _meetings)
@@ -44,11 +45,12 @@ namespace DirectumMeetings.Controllers
                 value.DateStart > meeting.DateEnd))
                 {
                     logger?.Invoke("встреча пересекается");
-                    return;
+                    return false;
                 }
             }
             //если пересечений нет, то добавляем
             _meetings.Add(meeting);
+            return true;
         }
         /// <summary>
         /// Изменить встречу
@@ -89,18 +91,14 @@ namespace DirectumMeetings.Controllers
         /// Сохранить встречи за конкретную дату в файл
         /// </summary>
         /// <param name="dateTime">Конкретная дата</param>
-        public void SaveMeetingsToFile(DateTime dateTime)
+        public void SaveMeetingsToFile(DateTime dateTime, ILoader loader)
         {
-            string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "meetings");
-            string pathToFile = Path.Combine(folderPath, dateTime.Date.ToString("dddd-MMMM-yyyy") + ".txt");
-           FileLoader fileLoader = new FileLoader(pathToFile);
-
-            fileLoader.Load(string.Concat(_meetings
+            loader.Load(string.Concat(_meetings
                 .Where(x => x.DateStart.Date.Equals(dateTime))
                 .Select(x => x.ToString() + "\n")
                 .ToList()));
 
-            logger?.Invoke($"Записи успешно сохранены в файл {pathToFile}");
+            logger?.Invoke($"Записи успешно сохранены в файл, папка {ProgramSettings.FolderPathMeetings}");
         }
         public bool IsContainsWithTitle(string title)
         {

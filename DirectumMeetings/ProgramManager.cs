@@ -1,6 +1,8 @@
 ﻿using DirectumMeetings.Controllers;
+using DirectumMeetings.FileLoad;
 using DirectumMeetings.Models;
 using DirectumMeetings.Notification;
+using DirectumMeetings.Settings;
 using DirectumMeetings.Utils;
 
 namespace DirectumMeetings;
@@ -13,10 +15,8 @@ public class ProgramManager
         Action<string> consoleLogger = Console.WriteLine;
 
         MeetingsController meetingController = new MeetingsController(consoleLogger);
-        meetingController.AddMeeting(new Meeting(DateTime.Now.AddMinutes(10), "jaba2", "Udgu", TimeSpan.FromMinutes(60), 5));
 
         NotificationManager notificationManager = new NotificationManager(meetingController, Console.WriteLine);
-        notificationManager.SubscribeNotificAction(WindowsNotification.SendNotification);
 
         new TaskFactory().StartNew(() => { notificationManager.RunCheckNotification(1000); });
 
@@ -117,7 +117,9 @@ public class ProgramManager
                         Console.WriteLine("Введите дату, за которую вы хотите получить встречи: (в формате ГГГГ-ММ-ДД)");
                         DateTime dateTime;
                         if (DateTime.TryParse(Console.ReadLine(), out dateTime))
-                            meetingController.SaveMeetingsToFile(dateTime);
+                            meetingController.SaveMeetingsToFile(dateTime,
+                                new FileLoader(Path.Combine(ProgramSettings.FolderPathMeetings,
+                                dateTime.Date.ToString("dddd-MMMM-yyyy") + ".txt")));
                         else
                             Console.WriteLine("Некорректный ввод даты");
                     }
